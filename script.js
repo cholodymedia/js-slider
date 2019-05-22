@@ -1,4 +1,5 @@
 let slide_position = {
+  // place slide at page start
   pos: 0,
   slider: function slide_pos() {
     slides = document.getElementsByClassName('slide');
@@ -12,42 +13,45 @@ let slide_position = {
 slide_position.slider();
 
 let scroll = {
+  // make css move animation
   status: true,
   pos_start: -70,
   pos_end: -110,
   right: function right() {
+    // right direction animation
     if (scroll.status) {
-      teleportRight.tep();
-      scroll.status = false;
+      teleportRight.tep(); // trigger last slide teleport
+      scroll.status = false; // block many trigger at one time
       slider = document.getElementsByClassName('slider');
-      slider[0].style.animationName = 'scroll_right';
+      slider[0].style.animationName = 'scroll_right'; // set css animation to right direction
       setTimeout(function() {
         let root = document.documentElement;
         scroll.pos_start -= 40;
-        root.style.setProperty('--pos_start', scroll.pos_start + 'vw');
+        root.style.setProperty('--pos_start', scroll.pos_start + 'vw'); // change css animation value
         scroll.pos_end -= 40;
-        root.style.setProperty('--pos_end', scroll.pos_end + 'vw');
+        root.style.setProperty('--pos_end', scroll.pos_end + 'vw'); // change css animation value
         slider[0].style.animationName = '';
         scroll.status = true;
-      }, 500);
+      }, 400);
     }
   },
 
   left: function left() {
+    // left direction animation
     if (scroll.status) {
-      teleportLeft.tep();
-      scroll.status = false;
+      teleportLeft.tep(); // trigger last slide teleport
+      scroll.status = false; // block many trigger at one time
       let root = document.documentElement;
       scroll.pos_end += 40;
-      root.style.setProperty('--pos_end', scroll.pos_end + 'vw');
+      root.style.setProperty('--pos_end', scroll.pos_end + 'vw'); // change css animation value
       scroll.pos_start += 40;
-      root.style.setProperty('--pos_start', scroll.pos_start + 'vw');
+      root.style.setProperty('--pos_start', scroll.pos_start + 'vw'); // change css animation value
       slider = document.getElementsByClassName('slider');
-      slider[0].style.animationName = 'scroll_left';
+      slider[0].style.animationName = 'scroll_left'; // set css animation to left direction
       setTimeout(function() {
         slider[0].style.animationName = '';
         scroll.status = true;
-      }, 500);
+      }, 400);
     }
   }
 };
@@ -145,3 +149,9 @@ let frame = {
     }
   }
 };
+
+let leftArrow = document.getElementsByClassName('arrow-left');
+leftArrow[0].addEventListener('click', scroll.left);
+
+let rightArrow = document.getElementsByClassName('arrow-right');
+rightArrow[0].addEventListener('click', scroll.right);
