@@ -22,8 +22,9 @@ body {
   background-color: palevioletred;
   position: relative;
   transform: translate3d(var(--pos_start), 0px, 0px);
-  animation-duration: 0.8s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
 }
 
 .slide {

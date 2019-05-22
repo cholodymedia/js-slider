@@ -29,7 +29,7 @@ let scroll = {
         root.style.setProperty('--pos_end', scroll.pos_end + 'vw');
         slider[0].style.animationName = '';
         scroll.status = true;
-      }, 800);
+      }, 500);
     }
   },
 
@@ -47,7 +47,7 @@ let scroll = {
       setTimeout(function() {
         slider[0].style.animationName = '';
         scroll.status = true;
-      }, 800);
+      }, 500);
     }
   }
 };
