@@ -1,0 +1,148 @@
+let slide_position = {
+  pos: 0,
+  slider: function slide_pos() {
+    slides = document.getElementsByClassName('slide');
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].style.transform = 'translate3d(' + this.pos + '%,0px,0px)';
+      this.pos += 100;
+    }
+  }
+};
+
+slide_position.slider();
+
+let scroll = {
+  status: true,
+  pos_start: -70,
+  pos_end: -110,
+  right: function right() {
+    if (scroll.status) {
+      teleportRight.tep();
+      scroll.status = false;
+      slider = document.getElementsByClassName('slider');
+      slider[0].style.animationName = 'scroll_right';
+      setTimeout(function() {
+        let root = document.documentElement;
+        scroll.pos_start -= 40;
+        root.style.setProperty('--pos_start', scroll.pos_start + 'vw');
+        scroll.pos_end -= 40;
+        root.style.setProperty('--pos_end', scroll.pos_end + 'vw');
+        slider[0].style.animationName = '';
+        scroll.status = true;
+      }, 800);
+    }
+  },
+
+  left: function left() {
+    if (scroll.status) {
+      teleportLeft.tep();
+      scroll.status = false;
+      let root = document.documentElement;
+      scroll.pos_end += 40;
+      root.style.setProperty('--pos_end', scroll.pos_end + 'vw');
+      scroll.pos_start += 40;
+      root.style.setProperty('--pos_start', scroll.pos_start + 'vw');
+      slider = document.getElementsByClassName('slider');
+      slider[0].style.animationName = 'scroll_left';
+      setTimeout(function() {
+        slider[0].style.animationName = '';
+        scroll.status = true;
+      }, 800);
+    }
+  }
+};
+
+document.addEventListener('keyup', function(e) {
+  if (e.defaultPrevented) {
+    return;
+  }
+
+  var key = e.key || e.keyCode;
+
+  if (key == 'ArrowLeft') {
+    scroll.left();
+  }
+  if (key == 'ArrowRight') {
+    scroll.right();
+  }
+});
+
+let teleportLeft = {
+  toTelePort: 5,
+  tep: function tep() {
+    let slide = document.getElementsByClassName('slide');
+    let first_pos;
+    if (teleportLeft.toTelePort == 5) {
+      first_pos = slide[0].style.transform;
+    } else {
+      first_pos = slide[teleportLeft.toTelePort + 1].style.transform;
+    }
+    let frst_pos = '';
+    function clear() {
+      first_pos = first_pos.split('');
+      for (var i = 0; i < 12; i++) {
+        first_pos.shift();
+      }
+      for (var i = 0; i < 12; i++) {
+        first_pos.pop();
+      }
+      for (var i = 0; i < first_pos.length; i++) {
+        frst_pos += first_pos[i];
+      }
+      frst_pos = parseInt(frst_pos);
+    }
+    clear();
+    let new_pos = frst_pos - 100;
+    slide[teleportLeft.toTelePort].style.transform = 'translate3d(' + new_pos + '%,0px,0px)';
+    if (teleportLeft.toTelePort == 0) {
+      teleportLeft.toTelePort = 5;
+    } else {
+      teleportLeft.toTelePort--;
+    }
+    if (teleportRight.toTelePort == 0) {
+      teleportRight.toTelePort = 5;
+    } else {
+      teleportRight.toTelePort - 1;
+    }
+  }
+};
+
+let teleportRight = {
+  toTelePort: 0,
+  tep: function tep() {
+    let slide = document.getElementsByClassName('slide');
+    let first_pos;
+    if (teleportRight.toTelePort == 0) {
+      first_pos = slide[5].style.transform;
+    } else {
+      first_pos = slide[teleportRight.toTelePort - 1].style.transform;
+    }
+    let frst_pos = '';
+    function clear() {
+      first_pos = first_pos.split('');
+      for (var i = 0; i < 12; i++) {
+        first_pos.shift();
+      }
+      for (var i = 0; i < 12; i++) {
+        first_pos.pop();
+      }
+      for (var i = 0; i < first_pos.length; i++) {
+        frst_pos += first_pos[i];
+      }
+      frst_pos = parseInt(frst_pos);
+    }
+    clear();
+    let new_pos = frst_pos + 100;
+    slide[teleportRight.toTelePort].style.transform = 'translate3d(' + new_pos + '%,0px,0px)';
+    if (teleportRight.toTelePort == 5) {
+      teleportRight.toTelePort = 0;
+    } else {
+      teleportRight.toTelePort++;
+    }
+    if (teleportLeft.toTelePort == 5) {
+      teleportLeft.toTelePort = 0;
+    } else {
+      teleportLeft.toTelePort + 1;
+    }
+  }
+};
